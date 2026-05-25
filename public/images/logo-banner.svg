@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120" width="600" height="120">
+  <!-- Yellow background bar -->
+  <rect x="0" y="30" width="600" height="90" fill="#f5c518" rx="4"/>
+  <!-- MUCA text -->
+  <text x="30" y="100" fill="#2d2d2d" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="800" letter-spacing="4">MUCA</text>
+  <!-- KEBAP text -->
+  <text x="340" y="100" fill="#2d2d2d" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="600" letter-spacing="3">KEBAP</text>
+  <!-- Flame shapes -->
+  <g transform="translate(320, 18)">
+    <path d="M0,50 Q5,30 10,10 Q15,30 20,50 Q10,42 0,50Z" fill="#cc0000"/>
+    <path d="M12,52 Q17,32 22,8 Q27,32 32,52 Q22,44 12,52Z" fill="#e63300"/>
+    <path d="M24,50 Q29,28 34,5 Q39,28 44,50 Q34,42 24,50Z" fill="#cc0000"/>
+    <path d="M36,52 Q41,35 46,12 Q51,35 56,52 Q46,44 36,52Z" fill="#e63300"/>
+  </g>
+</svg>
