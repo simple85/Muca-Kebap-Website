@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="flex flex-col items-center md:items-start">
             <Image
-              src="/images/logo-circle.svg"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/logo-circle.svg`}
               alt="Muca Kebap"
               width={80}
               height={80}

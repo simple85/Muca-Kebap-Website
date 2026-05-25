@@ -86,7 +86,7 @@ export default function Kontakt() {
               {/* Storefront Image */}
               <div className="mt-10 relative h-80 overflow-hidden rounded-2xl shadow-lg">
                 <Image
-                  src="/images/storefront.jpg"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/storefront.jpg`}
                   alt="Muca Kebap Laden am Oranienplatz"
                   fill
                   className="object-cover"

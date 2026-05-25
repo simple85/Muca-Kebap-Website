@@ -17,7 +17,7 @@ export default function UeberUns() {
         <div className="mx-auto max-w-4xl px-4 text-center">
           <ScrollReveal>
             <Image
-              src="/images/logo-circle.svg"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/logo-circle.svg`}
               alt="Muca Kebap"
               width={100}
               height={100}
@@ -55,7 +55,7 @@ export default function UeberUns() {
             <ScrollReveal direction="right">
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl">
                 <Image
-                  src="/images/food-1.jpg"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/food-1.jpg`}
                   alt="Frischer Döner von Muca Kebap"
                   fill
                   className="object-cover"
@@ -139,7 +139,7 @@ export default function UeberUns() {
             <ScrollReveal direction="left" className="order-2 lg:order-1">
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl">
                 <Image
-                  src="/images/food-2.jpg"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/food-2.jpg`}
                   alt="Muca Kebap Zubereitung"
                   fill
                   className="object-cover"

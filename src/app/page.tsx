@@ -67,7 +67,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <Image
-          src="/images/food-4.jpg"
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/food-4.jpg`}
           alt="Frischer Döner von Muca Kebap"
           fill
           className="object-cover"
@@ -76,7 +76,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 text-center text-white px-4">
           <Image
-            src="/images/logo-circle.svg"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/logo-circle.svg`}
             alt="Muca Kebap Logo"
             width={140}
             height={140}

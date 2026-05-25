@@ -27,7 +27,7 @@ export default function Navbar() {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/images/logo-circle.svg"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/logo-circle.svg`}
               alt="Muca Kebap"
               width={56}
               height={56}
