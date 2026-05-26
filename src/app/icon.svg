@@ -1,0 +1,32 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="topArc" d="M 105,250 A 145,145 0 0,1 395,250" fill="none"/>
+    <path id="bottomArc" d="M 395,250 A 145,145 0 0,1 105,250" fill="none"/>
+  </defs>
+
+  <!-- Outer dark circle -->
+  <circle cx="250" cy="250" r="230" fill="#4a4a4a"/>
+
+  <!-- Yellow ring -->
+  <circle cx="250" cy="250" r="175" fill="none" stroke="#e8c840" stroke-width="4"/>
+
+  <!-- Small dots left and right -->
+  <circle cx="72" cy="250" r="7" fill="#ffffff"/>
+  <circle cx="428" cy="250" r="7" fill="#ffffff"/>
+
+  <!-- Curved text: DÖNER along the top -->
+  <text font-family="'Arial', 'Helvetica', sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="18">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">DÖNER</textPath>
+  </text>
+
+  <!-- Curved text: KEBAP along the bottom -->
+  <text font-family="'Arial', 'Helvetica', sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="18">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">KEBAP</textPath>
+  </text>
+
+  <!-- Center text MU -->
+  <text x="250" y="240" text-anchor="middle" font-family="'Arial', 'Helvetica', sans-serif" font-size="120" font-weight="700" fill="#ffffff" letter-spacing="8">MU</text>
+
+  <!-- Center text CA -->
+  <text x="250" y="345" text-anchor="middle" font-family="'Arial', 'Helvetica', sans-serif" font-size="120" font-weight="700" fill="#ffffff" letter-spacing="8">CA</text>
+</svg>

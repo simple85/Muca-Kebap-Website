@@ -1,8 +1,8 @@
 const REEL_IDS = [
   "DPeNsjejTRr",
   "DBG9rL2vZ7k",
-  "DBg3miduKYC",
   "DH6IdvUsPDr",
+  "DBg3miduKYC",
 ];
 
 export default function InstagramEmbed() {

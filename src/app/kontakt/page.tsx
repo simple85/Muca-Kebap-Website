@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Kontakt | Muca Kebap",
@@ -127,6 +128,25 @@ export default function Kontakt() {
               </div>
             </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Form */}
+      <section className="py-16 bg-muca-cream">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal>
+            <h2 className="text-3xl font-extrabold text-muca-dark mb-4 text-center">
+              Schreiben Sie uns
+            </h2>
+            <p className="text-gray-600 text-center mb-10 text-lg">
+              Sie möchten unser Team kontaktieren, z.&nbsp;B. zu Franchise-Anfragen oder anderen
+              Anliegen rund um unser Restaurant? Schreiben Sie uns eine Nachricht und wir melden
+              uns bei Ihnen!
+            </p>
+          </ScrollReveal>
+          <ScrollReveal>
+            <ContactForm />
+          </ScrollReveal>
         </div>
       </section>
 

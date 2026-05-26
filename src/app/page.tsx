@@ -109,7 +109,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-muca-dark mb-2">Täglich frisches Hausbrot</h3>
+              <h3 className="text-xl font-bold text-muca-dark mb-2">Unser Muca-Hausbrot</h3>
               <p className="text-gray-600">
                 Unser Brot wird jeden Tag frisch und von Hand in unserer Küche gebacken – für den unverwechselbaren Muca-Geschmack.
               </p>
@@ -121,7 +121,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-muca-dark mb-2">Täglich frisches Dönerfleisch</h3>
+              <h3 className="text-xl font-bold text-muca-dark mb-2">Frisch vom Spieß</h3>
               <p className="text-gray-600">
                 Unser Fleisch wird täglich frisch am Spieß zubereitet – 100% Halal und von höchster Qualität.
               </p>
