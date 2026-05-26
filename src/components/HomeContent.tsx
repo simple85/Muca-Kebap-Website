@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import InstagramEmbed from "@/components/InstagramEmbed";
 import ReviewCard from "@/components/ReviewCard";
@@ -10,19 +11,52 @@ import { useT } from "@/lib/LanguageContext";
 export default function HomeContent() {
   const { t } = useT();
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const heroRef = useRef<HTMLElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const inner = innerRef.current;
+    if (!hero || !inner) return;
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = hero.getBoundingClientRect();
+        const h = hero.offsetHeight;
+        // progress 0 (top in view) → 1 (hero fully scrolled out)
+        const progress = Math.min(Math.max(-rect.top / h, 0), 1);
+        // scale: 1.15 → 0.95 as you scroll past
+        const scale = 1.15 - progress * 0.2;
+        inner.style.transform = `scale(${scale})`;
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // initial
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden">
-        <Image
-          src={`${basePath}/images/food-4.jpg`}
-          alt="Frischer Döner von Muca Kebap"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/50" />
+      <section
+        ref={heroRef}
+        className="relative h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden"
+      >
+        <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.15)" }}>
+          <Image
+            src={`${basePath}/images/food-4.jpg`}
+            alt="Frischer Döner von Muca Kebap"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
         <div className="relative z-10 text-center text-white px-4">
           <Image
             src={`${basePath}/images/logo-circle.svg`}
