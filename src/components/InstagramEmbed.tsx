@@ -1,24 +1,74 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, createContext, useContext, useCallback } from "react";
 
+/* ── Global "only one video at a time" coordinator ── */
+type StopFn = () => void;
+const PlayerContext = createContext<{
+  register: (stop: StopFn) => void;
+  notifyPlay: (stop: StopFn) => void;
+}>({
+  register: () => {},
+  notifyPlay: () => {},
+});
+
+function PlayerProvider({ children }: { children: React.ReactNode }) {
+  const players = useRef<Set<StopFn>>(new Set());
+
+  const register = useCallback((stop: StopFn) => {
+    players.current.add(stop);
+    return () => players.current.delete(stop);
+  }, []);
+
+  const notifyPlay = useCallback((currentStop: StopFn) => {
+    players.current.forEach((stop) => {
+      if (stop !== currentStop) stop();
+    });
+  }, []);
+
+  return (
+    <PlayerContext.Provider value={{ register, notifyPlay }}>
+      {children}
+    </PlayerContext.Provider>
+  );
+}
+
+/* ── Reel data ── */
 const REELS = [
-  { video: "/videos/reel-1.mp4", id: "DPeNsjejTRr" },
-  { video: "/videos/reel-2.mp4", id: "DBG9rL2vZ7k" },
-  { video: "/videos/reel-3.mp4", id: "DH6IdvUsPDr" },
-  { video: "/videos/reel-4.mp4", id: "DBg3miduKYC" },
+  { video: "/videos/reel-1.mp4", id: "DPeNsjejTRr", poster: "/images/thumb-1.jpg" },
+  { video: "/videos/reel-2.mp4", id: "DBG9rL2vZ7k", poster: "/images/thumb-2.jpg" },
+  { video: "/videos/reel-3.mp4", id: "DH6IdvUsPDr", poster: "/images/thumb-3.jpg" },
+  { video: "/videos/reel-4.mp4", id: "DBg3miduKYC", poster: "/images/thumb-4.jpg" },
 ];
 
-function ReelCard({ video, id }: { video: string; id: string }) {
+/* ── Individual reel card ── */
+function ReelCard({ video, id, poster }: { video: string; id: string; poster: string }) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false); // start with sound ON
+  const { register, notifyPlay } = useContext(PlayerContext);
+
+  // Create a stable stop function and register it
+  const stopRef = useRef<StopFn>(() => {});
+  useEffect(() => {
+    const stop = () => {
+      const v = videoRef.current;
+      if (v && !v.paused) {
+        v.pause();
+        setPlaying(false);
+      }
+    };
+    stopRef.current = stop;
+    register(stop);
+  }, [register]);
 
   const togglePlay = () => {
     const v = videoRef.current;
     if (!v) return;
     if (v.paused) {
+      // Stop all other videos first
+      notifyPlay(stopRef.current);
       v.play();
       setPlaying(true);
     } else {
@@ -71,6 +121,7 @@ function ReelCard({ video, id }: { video: string; id: string }) {
           <video
             ref={videoRef}
             src={`${basePath}${video}`}
+            poster={`${basePath}${poster}`}
             className="h-full w-full object-cover"
             loop
             muted={muted}
@@ -152,10 +203,12 @@ function ReelCard({ video, id }: { video: string; id: string }) {
 
 export default function InstagramEmbed() {
   return (
-    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-      {REELS.map((reel) => (
-        <ReelCard key={reel.id} {...reel} />
-      ))}
-    </div>
+    <PlayerProvider>
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        {REELS.map((reel) => (
+          <ReelCard key={reel.id} {...reel} />
+        ))}
+      </div>
+    </PlayerProvider>
   );
 }
