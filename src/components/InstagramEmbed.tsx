@@ -35,9 +35,9 @@ function PlayerProvider({ children }: { children: React.ReactNode }) {
 
 /* ── Reel data ── */
 const REELS = [
-  { video: "/videos/reel-1.mp4", id: "DPeNsjejTRr", poster: "/images/thumb-1.jpg" },
-  { video: "/videos/reel-2.mp4", id: "DBG9rL2vZ7k", poster: "/images/thumb-2.jpg" },
   { video: "/videos/reel-3.mp4", id: "DH6IdvUsPDr", poster: "/images/thumb-3.jpg" },
+  { video: "/videos/reel-2.mp4", id: "DBG9rL2vZ7k", poster: "/images/thumb-2.jpg" },
+  { video: "/videos/reel-1.mp4", id: "DPeNsjejTRr", poster: "/images/thumb-1.jpg" },
   { video: "/videos/reel-4.mp4", id: "DBg3miduKYC", poster: "/images/thumb-4.jpg" },
 ];
 
