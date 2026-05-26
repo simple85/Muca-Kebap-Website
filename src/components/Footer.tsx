@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useT } from "@/lib/LanguageContext";
 
 export default function Footer() {
+  const { t } = useT();
+
   return (
     <footer className="bg-muca-dark text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -15,21 +20,21 @@ export default function Footer() {
               className="mb-4"
             />
             <p className="text-gray-300 text-sm text-center md:text-left">
-              Frisch. Halal. Hausgemacht.
+              {t.footer.tagline}
             </p>
           </div>
 
           <div className="text-center md:text-left">
-            <h3 className="mb-4 text-lg font-bold text-muca-yellow">Navigation</h3>
+            <h3 className="mb-4 text-lg font-bold text-muca-yellow">{t.footer.navigation}</h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-gray-300 transition-colors hover:text-muca-yellow">Home</Link></li>
-              <li><Link href="/uber-uns" className="text-gray-300 transition-colors hover:text-muca-yellow">Über Uns</Link></li>
-              <li><Link href="/kontakt" className="text-gray-300 transition-colors hover:text-muca-yellow">Kontakt</Link></li>
+              <li><Link href="/" className="text-gray-300 transition-colors hover:text-muca-yellow">{t.nav.home}</Link></li>
+              <li><Link href="/uber-uns" className="text-gray-300 transition-colors hover:text-muca-yellow">{t.nav.about}</Link></li>
+              <li><Link href="/kontakt" className="text-gray-300 transition-colors hover:text-muca-yellow">{t.nav.contact}</Link></li>
             </ul>
           </div>
 
           <div className="text-center md:text-left">
-            <h3 className="mb-4 text-lg font-bold text-muca-yellow">Kontakt</h3>
+            <h3 className="mb-4 text-lg font-bold text-muca-yellow">{t.footer.contact}</h3>
             <address className="not-italic text-gray-300 space-y-2 text-sm">
               <p>Oranienpl. 2, 10999 Berlin</p>
               <p>Tel: 0000</p>
@@ -49,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
-          &copy; {new Date().getFullYear()} Muca Kebap. Alle Rechte vorbehalten.
+          &copy; {new Date().getFullYear()} Muca Kebap. {t.footer.rights}
         </div>
       </div>
     </footer>
