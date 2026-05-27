@@ -19,6 +19,14 @@ export default function HomeContent() {
     const inner = innerRef.current;
     if (!wrapper || !inner) return;
 
+    const isMobile = window.innerWidth < 768;
+    // Mobile: 1.25 → 0.85 (0.40 range), Desktop: 1.20 → 0.90 (0.30 range)
+    const startScale = isMobile ? 1.25 : 1.20;
+    const scaleRange = isMobile ? 0.40 : 0.30;
+
+    // Apply initial scale immediately
+    inner.style.transform = `scale(${startScale})`;
+
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -27,8 +35,7 @@ export default function HomeContent() {
         const rect = wrapper.getBoundingClientRect();
         const h = wrapper.offsetHeight;
         const progress = Math.min(Math.max(-rect.top / h, 0), 1);
-        // scale: 1.15 → 0.95 as you scroll past
-        const scale = 1.15 - progress * 0.2;
+        const scale = startScale - progress * scaleRange;
         inner.style.transform = `scale(${scale})`;
         ticking = false;
       });
@@ -44,7 +51,7 @@ export default function HomeContent() {
       {/* Hero + Features – shared background */}
       <div ref={wrapperRef} className="relative overflow-hidden">
         {/* Background image + overlay (zooms on scroll) */}
-        <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.15)" }}>
+        <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.20)" }}>
           <Image
             src={`${basePath}/images/food-4.jpg`}
             alt="Frischer Döner von Muca Kebap"
