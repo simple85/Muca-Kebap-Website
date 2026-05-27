@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useT } from "@/lib/LanguageContext";
 import type { Lang } from "@/lib/translations";
 
@@ -17,6 +17,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const { lang, setLang, t } = useT();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const links = [
     { href: "/", label: t.nav.home },
@@ -30,8 +38,17 @@ export default function Navbar() {
     }
   };
 
+  // Text color: white when transparent, dark when solid
+  const textColor = scrolled ? "text-muca-dark" : "text-white";
+  const activeColor = "text-muca-yellow";
+  const borderColor = scrolled ? "border-gray-200" : "border-white/30";
+
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex-shrink-0">
@@ -51,9 +68,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`text-lg font-semibold transition-colors hover:text-muca-yellow ${
-                  pathname === link.href
-                    ? "text-muca-yellow"
-                    : "text-muca-dark"
+                  pathname === link.href ? activeColor : textColor
                 }`}
               >
                 {link.label}
@@ -63,7 +78,7 @@ export default function Navbar() {
               href="https://www.instagram.com/mucakebap.berlin?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muca-dark transition-colors hover:text-muca-yellow"
+              className={`transition-colors hover:text-muca-yellow ${textColor}`}
               aria-label="Instagram"
             >
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -72,7 +87,7 @@ export default function Navbar() {
             </a>
 
             {/* Language switcher – desktop */}
-            <div className="flex items-center gap-1 ml-2 border-l border-gray-200 pl-4">
+            <div className={`flex items-center gap-1 ml-2 border-l ${borderColor} pl-4`}>
               {LANGS.map((l) => (
                 <button
                   key={l.code}
@@ -108,10 +123,10 @@ export default function Navbar() {
 
             <details ref={detailsRef} className="group relative">
               <summary className="list-none cursor-pointer p-3 -mr-2 rounded-lg active:bg-gray-100 [&::-webkit-details-marker]:hidden">
-                <svg className="h-7 w-7 text-muca-dark pointer-events-none group-open:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`h-7 w-7 ${textColor} pointer-events-none group-open:hidden`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                <svg className="h-7 w-7 text-muca-dark pointer-events-none hidden group-open:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`h-7 w-7 ${textColor} pointer-events-none hidden group-open:block`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </summary>

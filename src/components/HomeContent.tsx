@@ -11,22 +11,21 @@ import { useT } from "@/lib/LanguageContext";
 export default function HomeContent() {
   const { t } = useT();
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const heroRef = useRef<HTMLElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const hero = heroRef.current;
+    const wrapper = wrapperRef.current;
     const inner = innerRef.current;
-    if (!hero || !inner) return;
+    if (!wrapper || !inner) return;
 
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect();
-        const h = hero.offsetHeight;
-        // progress 0 (top in view) → 1 (hero fully scrolled out)
+        const rect = wrapper.getBoundingClientRect();
+        const h = wrapper.offsetHeight;
         const progress = Math.min(Math.max(-rect.top / h, 0), 1);
         // scale: 1.15 → 0.95 as you scroll past
         const scale = 1.15 - progress * 0.2;
@@ -36,17 +35,15 @@ export default function HomeContent() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // initial
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <>
-      {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="relative h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden"
-      >
+      {/* Hero + Features – shared background */}
+      <div ref={wrapperRef} className="relative overflow-hidden">
+        {/* Background image + overlay (zooms on scroll) */}
         <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.15)" }}>
           <Image
             src={`${basePath}/images/food-4.jpg`}
@@ -57,66 +54,70 @@ export default function HomeContent() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        <div className="relative z-10 text-center text-white px-4">
-          <Image
-            src={`${basePath}/images/logo-circle.svg`}
-            alt="Muca Kebap Logo"
-            width={140}
-            height={140}
-            className="mx-auto mb-6"
-          />
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
-            Muca Kebap
-          </h1>
-          <p className="text-xl sm:text-2xl font-light mb-8 drop-shadow">
-            {t.hero.tagline}
-          </p>
-          <a
-            href="https://maps.app.goo.gl/hVg8qfacf4grf7up6"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-full bg-muca-yellow px-8 py-4 text-lg font-bold text-muca-dark shadow-lg transition-transform hover:scale-105"
-          >
-            {t.hero.cta}
-          </a>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="bg-muca-cream py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <StaggerReveal className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="text-center p-8 rounded-2xl bg-white shadow-sm">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muca-yellow/20">
-                <svg className="h-8 w-8 text-muca-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+        {/* Hero content */}
+        <section className="relative h-[80vh] min-h-[500px] flex items-center justify-center">
+          <div className="relative z-10 text-center text-white px-4">
+            <Image
+              src={`${basePath}/images/logo-circle.svg`}
+              alt="Muca Kebap Logo"
+              width={140}
+              height={140}
+              className="mx-auto mb-6"
+            />
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+              Muca Kebap
+            </h1>
+            <p className="text-xl sm:text-2xl font-light mb-8 drop-shadow">
+              {t.hero.tagline}
+            </p>
+            <a
+              href="https://maps.app.goo.gl/hVg8qfacf4grf7up6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-muca-yellow px-8 py-4 text-lg font-bold text-muca-dark shadow-lg transition-transform hover:scale-105"
+            >
+              {t.hero.cta}
+            </a>
+          </div>
+        </section>
+
+        {/* Features – transparent, floating over hero background */}
+        <section className="relative py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <StaggerReveal className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              <div className="text-center p-8 rounded-2xl bg-white/95 backdrop-blur-sm shadow-lg">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muca-yellow/20">
+                  <svg className="h-8 w-8 text-muca-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.bread.title}</h3>
+                <p className="text-gray-600">{t.features.bread.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.bread.title}</h3>
-              <p className="text-gray-600">{t.features.bread.desc}</p>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-white shadow-sm">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muca-red/10">
-                <svg className="h-8 w-8 text-muca-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                </svg>
+              <div className="text-center p-8 rounded-2xl bg-white/95 backdrop-blur-sm shadow-lg">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muca-red/10">
+                  <svg className="h-8 w-8 text-muca-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.meat.title}</h3>
+                <p className="text-gray-600">{t.features.meat.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.meat.title}</h3>
-              <p className="text-gray-600">{t.features.meat.desc}</p>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-white shadow-sm">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+              <div className="text-center p-8 rounded-2xl bg-white/95 backdrop-blur-sm shadow-lg">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.hygiene.title}</h3>
+                <p className="text-gray-600">{t.features.hygiene.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-muca-dark mb-2">{t.features.hygiene.title}</h3>
-              <p className="text-gray-600">{t.features.hygiene.desc}</p>
-            </div>
-          </StaggerReveal>
-        </div>
-      </section>
+            </StaggerReveal>
+          </div>
+        </section>
+      </div>
 
       {/* Instagram Section */}
       <section className="bg-white py-16">
