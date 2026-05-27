@@ -13,17 +13,37 @@ export default function HomeContent() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const inner = innerRef.current;
+    const hero = heroRef.current;
     if (!wrapper || !inner) return;
+    const img = inner.querySelector("img");
 
-    const isMobile = window.innerWidth < 768;
-    // Mobile: barely zoomed start, strong zoom-out on scroll
-    // Desktop: slight zoom start, solid zoom-out
-    const startScale = isMobile ? 1.03 : 1.05;
-    const endScale = isMobile ? 0.85 : 0.88;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const isPortrait = vh > vw;
+    const isMobile = vw < 768;
+
+    // On portrait mobile, shorten hero so the image isn't cropped as heavily
+    if (hero && isMobile && isPortrait) {
+      const ratio = vh / vw;
+      // Very tall screens (>1.7 like most phones): 50vh
+      // Moderate portrait (tablets): 60vh
+      hero.style.height = ratio > 1.7 ? "50vh" : "60vh";
+      hero.style.minHeight = "350px";
+    }
+
+    // On portrait screens, position the image to show more of the subject
+    if (img && isPortrait) {
+      img.style.objectPosition = "center 40%";
+    }
+
+    // Scale: start close to natural, zoom out on scroll
+    const startScale = isMobile ? 1.02 : 1.05;
+    const endScale = isMobile ? 0.88 : 0.90;
     const range = startScale - endScale;
 
     inner.style.transform = `scale(${startScale})`;
@@ -64,7 +84,7 @@ export default function HomeContent() {
         </div>
 
         {/* Hero content */}
-        <section className="relative h-[80vh] min-h-[500px] flex items-center justify-center">
+        <section ref={heroRef} className="relative h-[80vh] min-h-[500px] flex items-center justify-center">
           <div className="relative z-10 text-center text-white px-4">
             <Image
               src={`${basePath}/images/logo-circle.svg`}
